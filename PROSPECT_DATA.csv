@@ -1,0 +1,31 @@
+﻿PRIMARY KEY,CONTACT,DOWNLOAD DATE,OS,DATABASE,ADDRESS,CITY,STATE,ZIP,PHONE NUMBER
+1,Michelle Wan,04MAR02:00:00:00.00,Windows,Oracle,4000 East Sky Harbor Blvd,Chesterfield,MO,63005,426-758-4180
+2,E. Fusco,31MAR02:00:00:00.00,NT,Sql Server,2617 Ramsey Rd #8,Herndon,VA,22070,500-881-3331
+3,Florence Dalton,17MAY01:00:00:00.00,MVS,DB2,1891 County Road 30,Kitts Hill,OH,45645,466-252-1201
+4,Earl Rigdon,18MAR02:00:00:00.00,Solaris,Oracle,17445 Drymill Road,Leesburg,VA,20175,338-157-8776
+5,Douglas Doty,03FEB02:00:00:00.00,WINDOWS,Microsoft Access,406 McClure Cir,Minneapolis,MN,55431,850-323-7265
+6,Rain Bird Corporate Services Inc.,13JAN02:00:00:00.00,WINDOWS,Microsoft SQL Server,832 Brooke Rd,Virginia Beach,VA,23454,549-354-2416
+7,TRW Space & Defense,12MAY01:00:00:00.00,HP/UNIX,Oracle,4624 Rhorie Rd,Athens,OH,45701,587-845-8069
+8,Anthony Lemberger,20JAN02:00:00:00.00,XP,Access,River View Road Ext,Lexington,NC,27292,865-139-2810
+9,Jose Rochford,11OCT01:00:00:00.00,Mainframe,DB/2,"2800 Woodlawn Dr, Apt 23B",Ballwin,MO,63011,721-144-7436
+10,Denise Nath,24JAN02:00:00:00.00,98,Microsoft Access,1215 N Caldwell St,New Haven,Ct,06516,660-469-0704
+11,Fidelity Federal Bank,05MAY01:00:00:00.00,UNIX,ORACLE,P.O.Box 429,Woodfields,OH,43793,306-312-4292
+12,Sean Nugent,19MAY01:00:00:00.00,Windows 95,Microsoft Access,1993 Ernsford Dr,St. Louis,MO,63114,495-764-8564
+13,Sidney Tretter,31MAY01:00:00:00.00,Win NT,Microsoft Access,161 Northfork Rd,Lima,OH,45801,419-566-4322
+14,Marina Tennis,24OCT01:00:00:00.00,HP,Oracle,2421 Patterson Rd # 3,Kettering,OH,45420,814-489-6429
+15,Shannon Mazo,09FEB02:00:00:00.00,Windows,Microsoft SQL Server,1515 Lord Ashley Dr,St. Louis,MO,63128,956-586-4147
+16,Jonathan McGee,14SEP01:00:00:00.00,Windows,MS SQL Server,4900 Rivergrade Rd,Bannockburn,IL,60015,843-042-5960
+17,Phillip Gerstle,23FEB02:00:00:00.00,LINUX,Oracle 8i,Po Box 13507,Skokie,IL,60076 2999,360-681-2934
+18,Rob Rubenstein,26MAR02:00:00:00.00,Windows NT,MS SQL Server,3939 Ruffin Rd,Saint Louis,MO,63021,297-073-4204
+19,Gwen Story,08APR02:00:00:00.00,Sun UNIX,Informix,2120 Raven Glass Pl,Philadelphia,PA,19178-4955,284-565-7463
+20,CBG,08APR02:00:00:00.00,Sun UNIX,Informix,200 Chestnut Avenue,Warren,OH,44483,612-921-7653
+21,Pat Duffey,13APR02:00:00:00.00,WINDOWS,Microsoft Access,12960 Randomwood Drive,Laurinburg,NC,28352,488-424-7558
+22,Motorola Inc. - Semiconductor Div,28APR02:00:00:00.00,WINDOWS,Microsoft Access,507 S High St,Woodsfield,OH,43793,398-684-7205
+23,California State Polytechnic Univ.,25NOV01:00:00:00.00,Mac,Filemaker Pro,3540 Wilshire Blvd,Redwood Shores,CA,94065,902-861-5100
+24,Johnathon Soon,26FEB02:00:00:00.00,MVS,DB2,239 N Edgeworth St,St Louis,MO,63104,615-005-6993
+25,Rebecca Golub,03DEC01:00:00:00.00,Windows NT,Microsoft SQL Server,112 Chaunti Cleer Road,Columbia,SC,29223,443-778-6033
+26,Ashley Bey,30JAN02:00:00:00.00,UNIX,ORACLE,P.O. Box 6239,N. Ridgeville,OH,44039,271-475-5054
+27,Kathy Lapp,06MAY01:00:00:00.00,LINUX,Oracle 8i,955 Deerrun,Centerville,OH,45409,718-922-0353
+28,Queen of Angels Medical Center,06MAY01:00:00:00.00,Win NT,Sql Server,20779 Silver Thistle Court,Ashburn,VA,20147,279-648-0144
+29,Northrop Corporation,31OCT01:00:00:00.00,Windows 95,Microsoft Access,Po Box 218,Hoskins,NE,68740,600-732-2269
+30,Citrus College,27JAN02:00:00:00.00,Windows NT,DB2,5024 Fairbanks Way,Sunnyvale,CA,94089,618-121-6649
