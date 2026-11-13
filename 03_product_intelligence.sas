@@ -16,91 +16,58 @@
    ============================================================ */
 
 
-
 /* STEP 1: PREPARE PRODUCT ANALYSIS DATA */
-
-proc sql noprint;
-
-    select nliteral(name)
-    into :product_var trimmed
-    from dictionary.columns
-    where libname = 'SASDQREF'
-      and memname = 'SALES'
-      and upcase(strip(name)) = 'PRODUCT NUMBER';
-
-    select nliteral(name)
-    into :sales_var trimmed
-    from dictionary.columns
-    where libname = 'SASDQREF'
-      and memname = 'SALES'
-      and upcase(strip(name)) = 'TOTAL SALES';
-
-    select nliteral(name)
-    into :type_var trimmed
-    from dictionary.columns
-    where libname = 'SASDQREF'
-      and memname = 'SALES'
-      and upcase(strip(name)) = 'PRODUCT CODE TYPE';
-
-quit;
-
-
-%put NOTE: Product variable = &product_var;
-%put NOTE: Sales variable = &sales_var;
-%put NOTE: Code type variable = &type_var;
-
 
 data work.product_base;
 
     set SASDQREF.SALES;
 
-    PRODUCT_NUMBER = &product_var;
-    TOTAL_SALES = &sales_var;
-    PRODUCT_CODE_TYPE = &type_var;
+    PRODUCT_NUMBER = 'PRODUCT NUMBER'n;
+    TOTAL_SALES = 'TOTAL SALES'n;
+    PRODUCT_CODE_TYPE = 'PRODUCT CODE TYPE'n;
 
     keep ID PRODUCT_NUMBER TOTAL_SALES PRODUCT_CODE_TYPE;
 
 run;
 
 
-/* STEP 2: CALCULATE TOTAL REVENUE */
+/* STEP 2: CALCULATE OVERALL REVENUE */
 
-proc sql noprint;
+proc sql;
 
-    select sum(TOTAL_SALES)
-    into :total_revenue trimmed
+    create table work.overall_sales as
+
+    select
+        sum(TOTAL_SALES) as OVERALL_REVENUE
+            format=comma18.2
+
     from work.product_base;
 
 quit;
-
-%put NOTE: Overall sales revenue = &total_revenue;
 
 
 /* STEP 3: PRODUCT-LEVEL PERFORMANCE */
 
 proc sql;
 
-    create table work.product_summary as
+    create table work.product_summary_raw as
 
     select
         PRODUCT_NUMBER,
 
         count(*) as TRANSACTION_COUNT,
 
-        sum(TOTAL_SALES)
-            as TOTAL_REVENUE format=comma18.2,
+        sum(TOTAL_SALES) as TOTAL_REVENUE
+            format=comma18.2,
 
-        mean(TOTAL_SALES)
-            as AVERAGE_SALE format=comma18.2,
+        avg(TOTAL_SALES) as AVERAGE_SALE
+            format=comma18.2,
 
-        min(TOTAL_SALES)
-            as MINIMUM_SALE format=comma18.2,
+        min(TOTAL_SALES) as MINIMUM_SALE
+            format=comma18.2,
 
-        max(TOTAL_SALES)
-            as MAXIMUM_SALE format=comma18.2,
-
-        calculated TOTAL_REVENUE / &total_revenue * 100
-            as REVENUE_CONTRIBUTION format=8.2
+        max(TOTAL_SALES) as MAXIMUM_SALE
+            format=comma18.2
 
     from work.product_base
 
@@ -111,7 +78,26 @@ proc sql;
 quit;
 
 
-/* STEP 4: DISPLAY TOP 15 PRODUCTS */
+/* STEP 4: CALCULATE REVENUE CONTRIBUTION */
+
+data work.product_summary;
+
+    if _n_ = 1 then set work.overall_sales;
+
+    set work.product_summary_raw;
+
+    if OVERALL_REVENUE ne 0 then
+        REVENUE_CONTRIBUTION =
+            (TOTAL_REVENUE / OVERALL_REVENUE) * 100;
+
+    format REVENUE_CONTRIBUTION 8.2;
+
+    drop OVERALL_REVENUE;
+
+run;
+
+
+/* STEP 5: DISPLAY TOP 15 PRODUCTS */
 
 title "MarketIQ - Top 15 Products by Revenue";
 
@@ -126,7 +112,7 @@ proc print data=work.product_summary(obs=15) noobs;
 run;
 
 
-/* STEP 5: PRODUCT REVENUE COMPARISON */
+/* STEP 6: PRODUCT REVENUE COMPARISON */
 
 title "MarketIQ - Top 15 Products by Revenue";
 
@@ -143,7 +129,7 @@ proc sgplot data=work.product_summary(obs=15);
 run;
 
 
-/* STEP 6: PRODUCT TRANSACTION VOLUME */
+/* STEP 7: PRODUCT TRANSACTION VOLUME */
 
 title "MarketIQ - Product Transaction Volume";
 
@@ -160,26 +146,27 @@ proc sgplot data=work.product_summary(obs=15);
 run;
 
 
-/* STEP 7: PRODUCT CODE TYPE ANALYSIS */
+/* STEP 8: PRODUCT CODE TYPE ANALYSIS */
 
 proc sql;
 
     create table work.product_type_summary as
 
     select
+
         case
-            when missing(PRODUCT_CODE_TYPE)
+            when missing(strip(PRODUCT_CODE_TYPE))
                 then "UNKNOWN"
             else strip(PRODUCT_CODE_TYPE)
         end as PRODUCT_CODE_TYPE length=255,
 
         count(*) as TRANSACTION_COUNT,
 
-        sum(TOTAL_SALES)
-            as TOTAL_REVENUE format=comma18.2,
+        sum(TOTAL_SALES) as TOTAL_REVENUE
+            format=comma18.2,
 
-        mean(TOTAL_SALES)
-            as AVERAGE_SALE format=comma18.2
+        avg(TOTAL_SALES) as AVERAGE_SALE
+            format=comma18.2
 
     from work.product_base
 
@@ -190,14 +177,14 @@ proc sql;
 quit;
 
 
+/* STEP 9: PRODUCT CODE TYPE VISUALISATION */
+
 title "MarketIQ - Product Code Type Performance";
 
 proc print data=work.product_type_summary noobs;
 
 run;
 
-
-/* STEP 8: PRODUCT CODE TYPE REVENUE COMPARISON */
 
 title "MarketIQ - Revenue by Product Code Type";
 
@@ -213,7 +200,7 @@ proc sgplot data=work.product_type_summary;
 run;
 
 
-/* STEP 9: PRODUCT SUMMARY STATISTICS */
+/* STEP 10: PRODUCT SUMMARY STATISTICS */
 
 title "MarketIQ - Product Sales Statistics";
 
@@ -225,7 +212,7 @@ proc means data=work.product_summary
 run;
 
 
-/* STEP 10: PRODUCT ANALYSIS VALIDATION */
+/* STEP 11: PRODUCT ANALYSIS VALIDATION */
 
 title "MarketIQ - Product Analysis Validation";
 
@@ -233,13 +220,18 @@ proc sql;
 
     select
         count(*) as TOTAL_SOURCE_RECORDS,
-        sum(TOTAL_SALES) as SOURCE_REVENUE format=comma18.2
+        sum(TOTAL_SALES) as SOURCE_REVENUE
+            format=comma18.2
+
     from work.product_base;
+
 
     select
         sum(TRANSACTION_COUNT) as PRODUCT_TRANSACTION_COUNT,
-        sum(TOTAL_REVENUE) as PRODUCT_TOTAL_REVENUE format=comma18.2,
+        sum(TOTAL_REVENUE) as PRODUCT_TOTAL_REVENUE
+            format=comma18.2,
         count(*) as DISTINCT_PRODUCTS
+
     from work.product_summary;
 
 quit;
